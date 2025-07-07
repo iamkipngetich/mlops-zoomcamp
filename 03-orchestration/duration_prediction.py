@@ -12,6 +12,8 @@ from sklearn.metrics import root_mean_squared_error
 import xgboost as xgb
 import mlflow
 
+from prefect import flow
+
 # Configure MLflow
 mlflow.set_tracking_uri("http://localhost:5000")
 mlflow.set_experiment("nyc-taxi-experiment-1")
@@ -84,6 +86,7 @@ def train_model(X_train, y_train, X_val, y_val, dv):
 
         return run.info.run_id
 
+@flow(name="NYC Taxi Training Flow")
 def run(year, month):
     df_train = read_dataframe(year=year, month=month)
 
